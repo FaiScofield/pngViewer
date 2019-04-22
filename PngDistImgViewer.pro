@@ -1,14 +1,19 @@
 TEMPLATE = app
 
 CONFIG -= debug_and_release
-CONFIG += release
-# CONFIG += debug
+#CONFIG += release
+CONFIG += c++11
+CONFIG += debug
+
 QMAKE_CXXFLAGS_RELEASE += -O3
 
 TARGET = pngDistImgViewer
-QT += core gui
+
+QT += widgets
+
 HEADERS += \
     ImgViewer.hpp
+
 SOURCES += \
     main.cpp \
     ImgViewer.cpp

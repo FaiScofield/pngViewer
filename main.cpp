@@ -1,7 +1,7 @@
 /*!
    \brief Program to display distance-png-images
 
-   \author Frank Moosmann (<frank.moosmann@kit.edu>) 
+   \author Frank Moosmann (<frank.moosmann@kit.edu>)
 **/
 
 #include <iostream>
@@ -11,7 +11,7 @@
 
 #include "ImgViewer.hpp"
 
- 
+
 using namespace std;
 
 int main( int argc, char** argv )
@@ -35,6 +35,7 @@ int main( int argc, char** argv )
   QApplication app(argc, argv);
   ImgViewer imageViewer(files);
   imageViewer.show();
+
   int r = app.exec();
   cout << endl;
   return r;

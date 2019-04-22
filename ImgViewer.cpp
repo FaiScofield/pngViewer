@@ -9,10 +9,10 @@
 #include <ctime>
 #include <cfloat>
 
-#include <QtGui>
 #include <QFileDialog>
 #include <QMutexLocker>
 #include <QFileDialog>
+#include <QMainWindow>
 
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
@@ -56,21 +56,21 @@ ImgViewer::ImgViewer(const vector<string> &filenames)
       }
     } // file exists
   } // for each file
-  cout << endl << "found " << recImages.size() << " images" << flush;
+  cout << endl << "Found " << recImages.size() << " images." << flush;
   files = recImages;
 #endif
 #endif
 
   // create GUI elements
-  lImage = new QLabel;
+  lImage = new QLabel();
   lImage->setBackgroundRole(QPalette::Base);
   lImage->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
   lImage->setScaledContents(true);
 
-  saImage = new QScrollArea;
+  saImage = new QScrollArea();
   saImage->setBackgroundRole(QPalette::Dark);
   saImage->setWidget(lImage);
-  setCentralWidget(saImage);
+  QMainWindow::setCentralWidget(saImage);
 
   tPlayer = new QTimer();
   tPlayer->setSingleShot(false);
@@ -123,7 +123,7 @@ ImgViewer::ImgViewer(const vector<string> &filenames)
   this->addAction(aOrigSize);
   this->addAction(aFitWindow);
   this->setContextMenuPolicy(Qt::ActionsContextMenu);
-  
+
   setWindowTitle(tr("PNG Distance Image Viewer"));
   resize(700, 500);
 
@@ -178,7 +178,7 @@ void ImgViewer::adjustMainWindowSize()
 bool ImgViewer::loadImg()
 {
   QString fn(files[currFileIdx].c_str());
-  //cout << endl << "loading " << fn.toStdString() << "..." << flush;
+//  cout << endl << "loading " << fn.toStdString() << "..." << flush;
   if (QFile(fn).exists()) {
     try {
       png::image<png::gray_pixel_16> png;
@@ -194,18 +194,18 @@ bool ImgViewer::loadImg()
           }
         }
       }
-      //cout << "values in range " << minVal << "..." << maxVal << flush;
+//      cout << "values in range " << minVal << " - " << maxVal << flush;
       double minD = (double)minVal;
       double maxD = (double)maxVal;
-      QImage image(png.get_width(),png.get_height(),QImage::Format_RGB16);
+      QImage image(png.get_width(), png.get_height(), QImage::Format_RGB16);
       for (unsigned int row=0; row<png.get_height(); ++row) {
         for (unsigned int col=0; col<png.get_width(); ++col) {
           short unsigned int v = png[row][col];
           if ((v < minVal) || (v > maxVal)) {
             image.setPixel(col, row, QColor::fromHsv(0, 0, 0).rgb() ); // H, S, V
           } else {
-            double d = (double)max(minVal, min(maxVal,png[row][col]));// cut off value, so it is within [minVal...maxVal]
-            d = 1.0 - (d - minD)/(maxD-minD); // scale to [0...1]
+            double d = (double)max(minVal, min(maxVal, png[row][col]));// cut off value, so it is within [minVal...maxVal]
+            d = 1.0 - (d - minD)/(maxD - minD); // scale to [0...1]
             image.setPixel(col, row, QColor::fromHsv(359.0 - d*d*d*359.0, 255.0, d*255.0).rgb() ); // H, S, V
           }
         }
@@ -213,7 +213,7 @@ bool ImgViewer::loadImg()
       //scaleFactor = 1.0;
       lImage->setPixmap(QPixmap::fromImage(image));
       setWindowTitle(fn);
-      //lImage->adjustSize();
+//      lImage->adjustSize();
       adjustMainWindowSize();
     } catch (exception &e) {
       return false;

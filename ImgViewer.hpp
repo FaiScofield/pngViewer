@@ -11,14 +11,14 @@
 #define IMGVIEWER_H
 
 #include <vector>
-#include <QtGui/QMainWindow>
-//#include <QtGui/QLayout>
-//#include <QtGui/QScrollArea>
 
-class QLabel;
-class QScrollArea;
-class QScrollBar;
-
+#include <QTimer>
+#include <QMainWindow>
+#include <QLabel>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QAction>
+//#include <QWidget>
 
 class ImgViewer : public QMainWindow
 {
@@ -32,10 +32,9 @@ public:
 //  void resizeEvent(QResizeEvent *event);
 
 private:
-
   std::vector<std::string> files;
   unsigned int currFileIdx;
-  
+
   double scaleFactor;
   QLabel *lImage;
   QScrollArea *saImage;
@@ -61,6 +60,7 @@ private slots:
   void zoomIn();
   void zoomOut();
   void adjustMainWindowSize();
+
 };
 
 #endif // IMGVIEWER_H
